@@ -1,0 +1,60 @@
+<resources>
+    <string name="app_name">AkiProxy</string>
+
+    <!-- HomeScreen -->
+    <string name="home_title">SOCKS VPN</string>
+    <string name="home_menu_content_description">Menu</string>
+    <string name="home_settings_content_description">Cài đặt</string>
+
+    <!-- Connection Status -->
+    <string name="status_connected">Đã kết nối</string>
+    <string name="description_connected">Kết nối của bạn đã được bảo vệ</string>
+    <string name="status_connecting">Đang kết nối...</string>
+    <string name="description_connecting">Vui lòng đợi trong giây lát</string>
+    <string name="status_disconnected">Chưa kết nối</string>
+    <string name="description_disconnected">Kết nối của bạn không an toàn</string>
+    <string name="status_error">Lỗi kết nối</string>
+    <string name="status_icon_content_description">Trạng thái</string>
+
+    <!-- Connect Button -->
+    <string name="connect_button_content_description">Kết nối</string>
+
+    <!-- Server Selection -->
+    <string name="current_location">Vị trí hiện tại</string>
+    <string name="default_server_name">Singapore</string>
+    <string name="country_flag_content_description">Cờ quốc gia</string>
+    <string name="select_server_content_description">Chọn máy chủ</string>
+
+    <!-- SettingsScreen -->
+    <string name="settings_title">Cài đặt chung</string>
+    <string name="settings_back_button_description">Quay lại</string>
+    <string name="settings_section_connection">Tùy chọn kết nối</string>
+    <string name="settings_auto_connect">Tự động kết nối khi khởi động</string>
+    <string name="settings_notifications">Bật/tắt thông báo</string>
+    <string name="settings_section_info">Thông tin &amp; Hỗ trợ</string>
+    <string name="settings_language">Ngôn ngữ</string>
+    <string name="settings_language_value">Tiếng Việt</string>
+    <string name="settings_about_us">Về chúng tôi</string>
+    <string name="settings_help">Trợ giúp</string>
+
+    <!-- EditConfigScreen -->
+    <string name="edit_config_title">Thêm Config VPN</string>
+    <string name="edit_config_save">Lưu</string>
+    <string name="edit_config_section_connection">Thông tin kết nối</string>
+    <string name="edit_config_host">HOST</string>
+    <string name="edit_config_host_placeholder">Nhập host hoặc địa chỉ IP</string>
+    <string name="edit_config_port">PORT</string>
+    <string name="edit_config_port_placeholder">ví dụ: 8080</string>
+    <string name="edit_config_section_auth">Xác thực (tuỳ chọn)</string>
+    <string name="edit_config_username">USERNAME</string>
+    <string name="edit_config_username_placeholder">Tên người dùng</string>
+    <string name="edit_config_password">PASSWORD</string>
+    <string name="edit_config_password_placeholder">Mật khẩu</string>
+    <string name="edit_config_save_button">Lưu cấu hình</string>
+
+    <!-- RecentsConfigsScreen -->
+    <string name="recents_title">Chọn máy chủ đã lưu</string>
+    <string name="recents_search_placeholder">Tìm kiếm theo tên hoặc quốc gia...</string>
+    <string name="recents_add_config_description">Thêm cấu hình</string>
+    <string name="recents_signal_strength_description">Độ mạnh tín hiệu</string>
+</resources>

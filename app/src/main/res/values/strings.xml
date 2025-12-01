@@ -1,0 +1,60 @@
+<resources>
+    <string name="app_name">AkiProxy</string>
+
+    <!-- HomeScreen -->
+    <string name="home_title">SOCKS VPN</string>
+    <string name="home_menu_content_description">Menu</string>
+    <string name="home_settings_content_description">Settings</string>
+
+    <!-- Connection Status -->
+    <string name="status_connected">Connected</string>
+    <string name="description_connected">Your connection is secure</string>
+    <string name="status_connecting">Connecting...</string>
+    <string name="description_connecting">Please wait a moment</string>
+    <string name="status_disconnected">Not Connected</string>
+    <string name="description_disconnected">Your connection is not secure</string>
+    <string name="status_error">Connection Error</string>
+    <string name="status_icon_content_description">Status</string>
+
+    <!-- Connect Button -->
+    <string name="connect_button_content_description">Connect</string>
+
+    <!-- Server Selection -->
+    <string name="current_location">Current Location</string>
+    <string name="default_server_name">Singapore</string>
+    <string name="country_flag_content_description">Country Flag</string>
+    <string name="select_server_content_description">Select Server</string>
+
+    <!-- SettingsScreen -->
+    <string name="settings_title">General Settings</string>
+    <string name="settings_back_button_description">Back</string>
+    <string name="settings_section_connection">Connection Options</string>
+    <string name="settings_auto_connect">Auto-connect on startup</string>
+    <string name="settings_notifications">Enable/disable notifications</string>
+    <string name="settings_section_info">Information &amp; Support</string>
+    <string name="settings_language">Language</string>
+    <string name="settings_language_value">English</string>
+    <string name="settings_about_us">About Us</string>
+    <string name="settings_help">Help</string>
+
+    <!-- EditConfigScreen -->
+    <string name="edit_config_title">Add VPN Config</string>
+    <string name="edit_config_save">Save</string>
+    <string name="edit_config_section_connection">Connection Info</string>
+    <string name="edit_config_host">HOST</string>
+    <string name="edit_config_host_placeholder">Enter host or IP address</string>
+    <string name="edit_config_port">PORT</string>
+    <string name="edit_config_port_placeholder">e.g., 8080</string>
+    <string name="edit_config_section_auth">Authentication (optional)</string>
+    <string name="edit_config_username">USERNAME</string>
+    <string name="edit_config_username_placeholder">Username</string>
+    <string name="edit_config_password">PASSWORD</string>
+    <string name="edit_config_password_placeholder">Password</string>
+    <string name="edit_config_save_button">Save Configuration</string>
+
+    <!-- RecentsConfigsScreen -->
+    <string name="recents_title">Select Saved Server</string>
+    <string name="recents_search_placeholder">Search by name or country...</string>
+    <string name="recents_add_config_description">Add Config</string>
+    <string name="recents_signal_strength_description">Signal Strength</string>
+</resources>

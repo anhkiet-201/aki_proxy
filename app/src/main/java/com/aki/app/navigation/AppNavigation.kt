@@ -5,7 +5,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.aki.app.ui.edit_config.EditConfigScreen
-import com.aki.app.ui.greeting.GreetingScreen
 import com.aki.app.ui.home.HomeScreen
 import com.aki.app.ui.recents.RecentsConfigsScreen
 import com.aki.app.ui.settings.SettingsScreen
@@ -36,9 +35,6 @@ fun AppNavigation() {
                 onNavigateBack = { navController.popBackStack() },
                 onSave = { navController.popBackStack() } // Quay lại sau khi lưu
             )
-        }
-        composable(Routes.Greeting.route) {
-            GreetingScreen()
         }
     }
 }

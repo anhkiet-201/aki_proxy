@@ -15,12 +15,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
+import androidx.compose.material.icons.automirrored.outlined.HelpOutline
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.PowerSettingsNew
 import androidx.compose.material.icons.outlined.HelpOutline
 import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -116,7 +118,7 @@ fun SettingsScreen(
                     }
                     SettingsDivider()
                     SettingsItem(
-                        icon = Icons.Outlined.HelpOutline,
+                        icon = Icons.AutoMirrored.Outlined.HelpOutline,
                         iconDescription = stringResource(R.string.settings_help),
                         title = stringResource(R.string.settings_help),
                         onClick = { /* TODO */ }
@@ -180,5 +182,5 @@ private fun SettingsItem(
 
 @Composable
 private fun SettingsDivider() {
-    Divider(modifier = Modifier.padding(start = 68.dp), thickness = 0.5.dp, color = MaterialTheme.colorScheme.background)
+    HorizontalDivider(modifier = Modifier.padding(start = 68.dp), thickness = 0.5.dp, color = MaterialTheme.colorScheme.background)
 }

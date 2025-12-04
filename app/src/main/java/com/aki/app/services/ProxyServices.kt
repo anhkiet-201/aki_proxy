@@ -2,13 +2,13 @@
 package com.aki.app.services
 
 import android.R
+import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Intent
 import android.content.pm.ServiceInfo
-import android.net.IpPrefix
 import android.net.VpnService
 import android.os.Build
 import android.os.ParcelFileDescriptor
@@ -16,7 +16,6 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.aki.app.receiver.VpnStateReceiver
 import com.aki.core.domain.model.VpnConfig
-import com.aki.core.domain.model.VpnState
 import com.aki.core.domain.usecase.GetSelectedConfigUseCase
 import com.aki.proxy.Tun2SocksJni
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,6 +29,7 @@ import java.net.InetAddress
 import javax.inject.Inject
 import kotlin.concurrent.thread
 
+@SuppressLint("VpnServicePolicy")
 @AndroidEntryPoint
 class ProxyServices : VpnService() {
 
@@ -49,7 +49,8 @@ class ProxyServices : VpnService() {
         const val NOTIFICATION_ID = 1
         const val CHANNEL_ID = "vpn_channel"
         const val EXTRA_CONFIG = "CONFIG"
-        const val BYPASS_DNS_IP = "1.1.1.1"
+        const val DNS_IP = "8.8.8.8"
+        const val MTU = 1280
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -124,7 +125,7 @@ class ProxyServices : VpnService() {
 
                 Tun2SocksJni.startTun2Socks(
                     fd,
-                    1500, // MTU
+                    MTU, // MTU
                     serverAddress,
                     config.user,
                     config.pass
@@ -154,7 +155,7 @@ class ProxyServices : VpnService() {
         try {
             vpnThread?.interrupt() // Interrupt the thread
             vpnThread?.join(2000) // Wait for it to finish
-        } catch (e: InterruptedException) {
+        } catch (_: InterruptedException) {
             Log.e(TAG, "Interrupted while waiting for VPN thread")
         }
 
@@ -187,7 +188,7 @@ class ProxyServices : VpnService() {
 
         val builder = Builder()
         builder.setSession("Socks5 VPN")
-        builder.setMtu(1500)
+        builder.setMtu(MTU)
         builder.addAddress("10.0.0.2", 32)
 
         var proxyIp = ""
@@ -202,12 +203,13 @@ class ProxyServices : VpnService() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             try {
                 builder.addRoute("0.0.0.0", 0)
-                if (proxyIp.isNotEmpty()) {
-                    builder.excludeRoute(IpPrefix(InetAddress.getByName(proxyIp), 32))
-                    Log.i(TAG, "Excluded Proxy IP ($proxyIp) from VPN.")
-                }
-                builder.excludeRoute(IpPrefix(InetAddress.getByName(BYPASS_DNS_IP), 32))
-                Log.i(TAG, "Excluded DNS IP ($BYPASS_DNS_IP) from VPN.")
+                builder.addDnsServer(DNS_IP)
+//                if (proxyIp.isNotEmpty()) {
+//                    builder.excludeRoute(IpPrefix(InetAddress.getByName(proxyIp), 32))
+//                    Log.i(TAG, "Excluded Proxy IP ($proxyIp) from VPN.")
+//                }
+//                builder.excludeRoute(IpPrefix(InetAddress.getByName(BYPASS_DNS_IP), 32))
+//                Log.i(TAG, "Excluded DNS IP ($BYPASS_DNS_IP) from VPN.")
 
             } catch (e: Exception) {
                 Log.e(TAG, "Android 13 excludeRoute failed", e)
@@ -234,7 +236,7 @@ class ProxyServices : VpnService() {
     }
 
     private fun fallbackRouteConfig(builder: Builder, proxyIp: String) {
-        val ipToExclude = if (proxyIp.isNotEmpty()) proxyIp else BYPASS_DNS_IP
+        val ipToExclude = proxyIp.ifEmpty { DNS_IP }
 
         Log.i(TAG, "Fallback Routing: Splitting routes to exclude $ipToExclude")
         try {
@@ -280,10 +282,8 @@ class ProxyServices : VpnService() {
 
     private fun createNotification(): Notification {
         val channelId = CHANNEL_ID
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val manager = getSystemService(NotificationManager::class.java)
-            manager.createNotificationChannel(NotificationChannel(channelId, "VPN", NotificationManager.IMPORTANCE_LOW))
-        }
+        val manager = getSystemService(NotificationManager::class.java)
+        manager.createNotificationChannel(NotificationChannel(channelId, "VPN", NotificationManager.IMPORTANCE_LOW))
         val stopPendingIntent = PendingIntent.getService(
             this, 1, Intent(this, ProxyServices::class.java).apply { action = ACTION_DISCONNECT },
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT

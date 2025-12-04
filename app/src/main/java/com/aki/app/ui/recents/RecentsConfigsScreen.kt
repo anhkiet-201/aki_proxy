@@ -119,6 +119,7 @@ fun RecentsConfigsScreen(
                         SwipeToDismissBox(
                             state = dismissState,
                             enableDismissFromStartToEnd = false,
+                            enableDismissFromEndToStart = isDismissed && server.config != selectedConfig?.config,
                             backgroundContent = { DeleteBackground() }
                         ) {
                             ServerItem(

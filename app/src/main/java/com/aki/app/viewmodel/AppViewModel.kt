@@ -3,8 +3,10 @@ package com.aki.app.viewmodel
 import android.app.Application
 import android.content.Intent
 import android.net.VpnService
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.aki.app.base.BaseViewModel
+import com.aki.app.receiver.VpnStateReceiver
 import com.aki.core.data.repository.VpnRepository
 import com.aki.core.domain.model.SelectedVpnConfig
 import com.aki.core.domain.model.VpnConfig
@@ -15,12 +17,15 @@ import com.aki.core.domain.usecase.StartVpnUseCase
 import com.aki.core.domain.usecase.StopVpnUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -33,12 +38,26 @@ class AppViewModel @Inject constructor(
     private val stopVpnUseCase: StopVpnUseCase,
 ) : BaseViewModel() {
 
-    val vpnState: StateFlow<VpnState> = vpnRepository.vpnState
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), VpnState.Disconnected)
-
     val selectedConfig: StateFlow<SelectedVpnConfig?> = flow {
         emitAll(getSelectedConfigUseCase.execute(Unit))
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
+
+    private val _vpnState: MutableStateFlow<VpnState> = MutableStateFlow(VpnState.Disconnected)
+
+    val vpnState: StateFlow<VpnState> = _vpnState.asStateFlow()
+
+    init {
+        viewModelScope.launch {
+            selectedConfig.collect { state ->
+                val status = when(state?.status) {
+                    "CONNECTED" -> VpnState.Connected
+                    "CONNECTING" -> VpnState.Connecting
+                    else -> VpnState.Disconnected
+                }
+                _vpnState.update { status }
+            }
+        }
+    }
 
     private val _permissionEvent = Channel<Intent>()
     val permissionEvent = _permissionEvent.receiveAsFlow()

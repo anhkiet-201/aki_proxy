@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
+import android.util.Log
 import androidx.core.content.ContextCompat
 import com.aki.app.receiver.VpnStateReceiver
 import com.aki.app.services.ProxyServices
@@ -43,7 +44,9 @@ class VpnRepositoryImpl @Inject constructor(
         // Emit the initial state
         trySend(VpnState.Disconnected)
 
-        awaitClose { context.unregisterReceiver(receiver) }
+        awaitClose {
+            context.unregisterReceiver(receiver)
+        }
     }
 
     override suspend fun startVpn(config: VpnConfig) {
